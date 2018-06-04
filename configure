@@ -3037,6 +3037,7 @@ if test "$pixman" = ""; then
     pixman="internal"
   fi
 fi
+pixman="system"
 if test "$pixman" = "none"; then
   if test "$want_tools" != "no" -o "$softmmu" != "no"; then
     error_exit "pixman disabled but system emulation or tools build" \

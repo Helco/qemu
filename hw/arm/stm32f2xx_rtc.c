@@ -194,7 +194,8 @@ f2xx_rtc_compute_target_time_from_host_time(f2xx_rtc *s, uint64_t rtc_period_ns,
     time_t target_time_ticks = (target_time_us * 1000) / rtc_period_ns;
     
     // Convert to date, hour, min, sec components
-    gmtime_r(&target_time_ticks, target_tm);
+    struct tm* result = gmtime(&target_time_ticks);
+    memcpy(&target_tm, result, sizeof(struct tm));
 
 
 #ifdef DEBUG_STM32F2XX_RTC
@@ -534,7 +535,8 @@ f2xx_update_current_date_and_time(void *arg)
     } else {
         while (s->ticks != new_target_ticks) {
             s->ticks += 1;
-            gmtime_r(&s->ticks, &new_target_tm);
+            struct tm* result = gmtime(&s->ticks);
+            memcpy(&new_target_tm, result, sizeof(struct tm));
             f2xx_rtc_set_time_and_date_registers(s, &new_target_tm);
 
             f2xx_alarm_check(s, 0);

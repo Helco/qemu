@@ -27,6 +27,7 @@ void stm32_rcc_set_periph_clk_irq(
         stm32_periph_t periph,
         qemu_irq periph_irq)
 {
+stm32_hw_warn("stm32_rcc_set_periph_clk_irq: %x, %d\n", s, periph);
     Clk clk = s->PERIPHCLK[periph];
 
     assert(clk != NULL);
@@ -41,7 +42,7 @@ uint32_t stm32_rcc_get_periph_freq(
     Clk clk;
 
     clk = s->PERIPHCLK[periph];
-
+stm32_hw_warn("stm32_rcc_set_periph_clk_irq: %x, %d\n", s, periph);
     assert(clk != NULL);
 
     return clktree_get_output_freq(clk);

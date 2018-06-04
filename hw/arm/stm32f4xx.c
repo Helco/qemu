@@ -26,7 +26,7 @@
 #include "hw/ssi.h"
 #include "hw/block/flash.h"
 #include "sysemu/blockdev.h" // drive_get
-
+#include "hw/arm/stm32_rcc.h"
 static const char *stm32f4xx_periph_name_arr[] = {
     ENUM_STRING(STM32_UART1),
     ENUM_STRING(STM32_UART2),
@@ -94,6 +94,8 @@ void do_sys_reset(void *opaque, int n, int level)
         qemu_system_reset_request();
     }
 }
+
+extern void stm32_rcc_init_clk(void *s);
 
 void stm32f4xx_init(
             ram_addr_t flash_size,        /* in KBytes */
@@ -163,6 +165,8 @@ void stm32f4xx_init(
         STM32_RCC_PERIPH,        /* periph index, not used */
         0x40023800,           /* base address */
         qdev_get_gpio_in(nvic, STM32_RCC_IRQ));  /* irq */
+stm32_rcc_init_clk(rcc_dev);
+stm32_hw_warn("stm32f4xx init line %d, rcc clk 14: %x\n", __LINE__, ((Stm32Rcc*)rcc_dev)->PERIPHCLK[14]);
 
     /* Setup GPIOs */
     DeviceState **gpio_dev = (DeviceState **)g_malloc0(sizeof(DeviceState *)
