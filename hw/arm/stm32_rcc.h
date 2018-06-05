@@ -15,6 +15,8 @@ struct Stm32Rcc {
     MemoryRegion iomem;
     qemu_irq irq;
 
+    uint32_t dummy; // Fixes structure alignment issue on windows
+
     /* Peripheral clocks */
     Clk PERIPHCLK[];
 };
