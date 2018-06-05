@@ -968,7 +968,6 @@ static void stm32_rcc_hclk_upd_irq_handler(void *opaque, int n, int level)
 /* Set up the clock tree */
 void stm32_rcc_init_clk(Stm32f2xxRcc *s)
 {
-stm32_hw_warn("stm32_rcc_init_clk: %x\n", s);
     int i;
     qemu_irq *hclk_upd_irq =
     qemu_allocate_irqs(stm32_rcc_hclk_upd_irq_handler, s, 1);
@@ -1055,7 +1054,6 @@ stm32_hw_warn("stm32_rcc_init_clk: %x\n", s);
 
     s->PERIPHCLK[STM32_UART1] =
         clktree_create_clk("UART1", 1, 1, false, CLKTREE_NO_MAX_FREQ, 0, s->PCLK2, NULL);
-stm32_hw_warn("stm32f4xx.c:%d clk14: %x\n", __LINE__, s->PERIPHCLK[STM32_UART1]);
     s->PERIPHCLK[STM32_UART2] =
         clktree_create_clk("UART2", 1, 1, false, CLKTREE_NO_MAX_FREQ, 0, s->PCLK1, NULL);
     s->PERIPHCLK[STM32_UART3] =
@@ -1099,7 +1097,7 @@ static int stm32_rcc_init(SysBusDevice *dev)
     sysbus_init_irq(dev, &s->irq);
 
     stm32_rcc_init_clk(s);
-stm32_hw_warn("stm32f4xx.c:%d clk14: %x\n", __LINE__, s->PERIPHCLK[STM32_UART1]);
+
     return 0;
 }
 
